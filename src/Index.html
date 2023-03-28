@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="./nullstyle.css" />
+        <link rel="stylesheet" href="./Index.css" />
+    </head>
+    <body>
+        <div class="container">
+            <header class="header">
+                <div class="logo">Your case</div>
+                <div class="sum">Cart total:<span> € 0.00</span></div>
+                <div class="shop-bag">
+                    <svg
+                        class="bag"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <g clip-path="url(#6wn4mk5tta)" fill="#000">
+                            <path
+                                d="M23.845 8.224a.533.533 0 0 0-.444-.148h-6.367V5.263a5.034 5.034 0 1 0-10.068 0v2.813H.599c-.178 0-.355 0-.444.148a.504.504 0 0 0-.148.444l2.22 12.142a3.613 3.613 0 0 0 3.495 2.961h12.556a3.643 3.643 0 0 0 3.494-2.99l2.221-12.113a.504.504 0 0 0-.148-.444zM8.15 5.263a3.85 3.85 0 1 1 7.7 0v2.813h-7.7V5.263zm12.438 15.37a2.37 2.37 0 0 1-2.31 1.954H5.722a2.37 2.37 0 0 1-2.31-1.955L1.31 9.261h21.38l-2.102 11.371z"
+                            />
+                            <path
+                                d="M16.442 15.035a.592.592 0 0 0 .592-.592v-1.777a.592.592 0 1 0-1.184 0v1.777c0 .327.265.592.592.592zM7.558 15.035a.592.592 0 0 0 .592-.592v-1.777a.592.592 0 1 0-1.184 0v1.777c0 .327.265.592.592.592z"
+                            />
+                        </g>
+                        <defs>
+                            <clipPath id="6wn4mk5tta">
+                                <path fill="#fff" d="M0 0h24v24H0z" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                </div>
+            </header>
+            <main class="main">
+                <div class="main__container">
+                    <aside class="filter">
+                        <div class="filter__container">
+                            <div class="filter__settings">
+                                <button class="filter__reset btn">Reset filters</button>
+                                <button class="filter__copy btn">Copy link</button>
+                            </div>
+                            <div class="filter__category filter__border">
+                                <div class="filter__text">Category</div>
+                                <div class="category__items filter__preset"></div>
+                            </div>
+                            <div class="filter__brand filter__border">
+                                <div class="filter__text">Brand</div>
+                                <div class="brand__items filter__preset"></div>
+                            </div>
+                            <div class="filter__price filter__border">
+                                <div class="filter__text">Price</div>
+                                <div class="price__zone filter__preset2">
+                                        <input type="text" placeholder="from" class="price min__price"></input>
+                                        <input type="text" placeholder="to" class="price max__price"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    <section class="product">
+                        <div class="product__container">
+                            <div class="settings__container">
+                                <select class="sort__list" name="" id="">
+                                    <option class="sort__item" label="Sort options:" disabled selected></option>
+                                    <option class="sort__item price__asc" value="1">Sort by price ASC</option>
+                                    <option class="sort__item price__desc" value="2">Sort by price DESC</option>
+                                    <option class="sort__item rating__asc" value="3">sort by rating ASC</option>
+                                    <option class="sort__item rating__desc" value="4">sort by rating DESC</option>
+                                    <option class="sort__item discount__asc" value="5">sort by discount ASC</option>
+                                    <option class="sort__item discount__desc" value="6">sort by discount DESC</option>
+                                </select>
+                                <div class="items__count">Found: <span class="count"></span></div>
+                                <input class="search" type="text" placeholder="search product" />
+                            </div>
+                            <section class="goods">
+                                <div class="goods__container"></div>
+                            </section>
+                        </div>
+                    </section>
+                </div>
+            </main>
+            <footer class="footer"><div class="footer__text">Your case 2023</div></footer>
+        </div>
+    </body>
+</html>
