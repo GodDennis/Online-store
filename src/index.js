@@ -1,33 +1,18 @@
-import './nullstyle.css';
-import './Index.css';
-import { dataCase } from './data';
-interface products {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    discountPercentage: number;
-    rating: number;
-    stock: number;
-    brand: string;
-    category: string;
-    thumbnail: string;
-    images: string[];
-}
-type FiltersType = 'brand' | 'category';
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require("./nullstyle.css");
+require("./Index.css");
+const data_1 = require("./data");
 // interface FilteredProducts {
 //     [key in filtersType]: products[];
 // }
-
 const domFilter = {
-    category: document.querySelector('.category__items') as HTMLElement,
-    brand: document.querySelector('.brand__items') as HTMLElement,
+    category: document.querySelector('.category__items'),
+    brand: document.querySelector('.brand__items'),
 };
-
-const goodsContainer: HTMLElement = document.querySelector('.goods__container') as HTMLElement;
-function cart(data: products[]): void {
-    for (let i = 0; i < dataCase.limit; i++) {
+const goodsContainer = document.querySelector('.goods__container');
+function cart(data) {
+    for (let i = 0; i < data_1.dataCase.limit; i++) {
         //Init cart elements
         const cart = document.createElement('div');
         const cartContainer = document.createElement('div');
@@ -48,7 +33,6 @@ function cart(data: products[]): void {
         const descStockSpan = document.createElement('span');
         const descDiscountSpan = document.createElement('span');
         //classAdd
-
         cart.classList.add('cart');
         cartContainer.classList.add('cartContainer');
         cartName.classList.add('cartName');
@@ -93,9 +77,7 @@ function cart(data: products[]): void {
         descStock.innerText = `Stock: `;
         //
         cartContainer.style.backgroundImage = `url(${data[i].images[0]})`;
-
         // insert elements of cart
-
         goodsContainer.append(cart);
         cart.prepend(cartName);
         cart.append(cartContainer);
@@ -108,7 +90,6 @@ function cart(data: products[]): void {
         cartDescription.append(descStock);
         cartContainer.append(cartAdd);
         cartContainer.append(cartLink);
-
         //span description
         descPrice.append(descPriceSpan);
         descDiscount.append(descDiscountSpan);
@@ -118,45 +99,37 @@ function cart(data: products[]): void {
         descStock.append(descStockSpan);
     }
 }
-
-cart(dataCase.products);
-
-const items: Element = document.querySelector('.goods__container') as HTMLElement;
-
-function ASCPrice(a: number) {
+cart(data_1.dataCase.products);
+const items = document.querySelector('.goods__container');
+function ASCPrice(a) {
     for (let i = 0; i < items.children.length; i++) {
         for (let j = i; j < items.children.length; j++) {
-            if (
-                +items.children[i].children[1].children[0].children[a].children[0].innerHTML >
-                +items.children[j].children[1].children[0].children[a].children[0].innerHTML
-            ) {
+            if (+items.children[i].children[1].children[0].children[a].children[0].innerHTML >
+                +items.children[j].children[1].children[0].children[a].children[0].innerHTML) {
                 const replacedNode = items.replaceChild(items.children[j], items.children[i]);
                 insertAfter(replacedNode, items.children[i]);
             }
         }
     }
 }
-function insertAfter(elem: Element, refElem: Element) {
-    return refElem.parentNode?.insertBefore(elem, refElem.nextSibling);
+function insertAfter(elem, refElem) {
+    var _a;
+    return (_a = refElem.parentNode) === null || _a === void 0 ? void 0 : _a.insertBefore(elem, refElem.nextSibling);
 }
 // sortPrice();
-
-function DESCPrice(a: number) {
+function DESCPrice(a) {
     for (let i = 0; i < items.children.length; i++) {
         for (let j = i; j < items.children.length; j++) {
-            if (
-                +items.children[i].children[1].children[0].children[a].children[0].innerHTML <
-                +items.children[j].children[1].children[0].children[a].children[0].innerHTML
-            ) {
+            if (+items.children[i].children[1].children[0].children[a].children[0].innerHTML <
+                +items.children[j].children[1].children[0].children[a].children[0].innerHTML) {
                 const replacedNode = items.replaceChild(items.children[j], items.children[i]);
                 insertAfter(replacedNode, items.children[i]);
             }
         }
     }
 }
-
-const sortList = document.querySelector('.sort__list') as HTMLSelectElement;
-sortList?.addEventListener('change', () => {
+const sortList = document.querySelector('.sort__list');
+sortList === null || sortList === void 0 ? void 0 : sortList.addEventListener('change', () => {
     if (sortList.selectedIndex === 1) {
         ASCPrice(3);
     }
@@ -176,64 +149,60 @@ sortList?.addEventListener('change', () => {
         DESCPrice(2);
     }
 });
-
 // search
-
-const search: HTMLInputElement = document.querySelector('.search') as HTMLInputElement;
+const search = document.querySelector('.search');
 search.addEventListener('input', function () {
-    const val: string = this.value.trim() as string;
+    const val = this.value.trim();
     const arr = Array.from(items.children);
     if (val != '') {
         arr.forEach((el) => {
-            if (
-                el.children[0].innerHTML.toLowerCase().search(val.toLowerCase()) == -1 &&
+            if (el.children[0].innerHTML.toLowerCase().search(val.toLowerCase()) == -1 &&
                 el.children[1].children[0].children[0].children[0].innerHTML.toLowerCase().search(val.toLowerCase()) ==
                     -1 &&
                 el.children[1].children[0].children[1].children[0].innerHTML.toLowerCase().search(val.toLowerCase()) ==
-                    -1
-            ) {
+                    -1) {
                 el.classList.add('hide');
-            } else {
+            }
+            else {
                 el.classList.remove('hide');
             }
         });
-    } else {
+    }
+    else {
         arr.forEach((el) => {
             el.classList.remove('hide');
         });
     }
 });
-
 // filter
-
-function filterRander(by: Element, type: string) {
+function filterRander(by, type) {
     const filterSet = new Set();
-    dataCase.products.forEach((el) => {
+    data_1.dataCase.products.forEach((el) => {
         if (type == 'brand') {
-            filterSet.add(el.brand as string);
+            filterSet.add(el.brand);
         }
         if (type == 'category') {
-            filterSet.add(el.category as string);
+            filterSet.add(el.category);
         }
     });
     const arr = Array.from(filterSet);
     for (let i = 0; i < arr.length; i++) {
-        const Input = document.createElement('input') as HTMLElement;
-        const Label = document.createElement('label') as HTMLElement;
+        const Input = document.createElement('input');
+        const Label = document.createElement('label');
         Input.setAttribute('type', 'checkbox');
-        Input.id = arr[i] as string;
+        Input.id = arr[i];
         Label.setAttribute('for', Input.id);
         Input.classList.add('Input');
         Label.classList.add('Label');
-        Label.innerHTML = arr[i] as string;
+        Label.innerHTML = arr[i];
         const itemContainer = document.createElement('div');
         itemContainer.append(Input);
         itemContainer.append(Label);
-        by?.append(itemContainer);
+        by === null || by === void 0 ? void 0 : by.append(itemContainer);
     }
 }
 function allChecked(type) {
-    const checkbox = domFilter[type].querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
+    const checkbox = domFilter[type].querySelectorAll('input[type="checkbox"]');
     let elemChecked = false;
     checkbox.forEach((el) => {
         if (el.checked) {
@@ -242,43 +211,44 @@ function allChecked(type) {
     });
     if (elemChecked == false) {
         goodsContainer.innerHTML = '';
-        cart(dataCase.products);
+        cart(data_1.dataCase.products);
     }
 }
-
-filterRander(domFilter.category as Element, 'category');
-filterRander(domFilter.brand as Element, 'brand');
-
-let result: products[] = [];
-let filteredCards: products[] = [];
-let a: HTMLInputElement;
+filterRander(domFilter.category, 'category');
+filterRander(domFilter.brand, 'brand');
+let result = [];
+let filteredCards = [];
+let a;
 function filterSelect() {
-    domFilter.category.onchange = (el: Event) => {
-        a = el.target as HTMLInputElement;
+    domFilter.category.onchange = (el) => {
+        a = el.target;
         if (a.checked) {
-            dataCase.products.filter((card) => {
+            data_1.dataCase.products.filter((card) => {
                 if (card.category == a.id) {
                     filteredCards.push(card);
-                } else {
+                }
+                else {
                     return false;
                 }
             });
             checkOtherFilters(filteredCards);
-            filteredCards = filteredCards.reduce((o: products[], i: products) => {
-                if (!o.find((v: products) => v.title == i.title)) {
+            filteredCards = filteredCards.reduce((o, i) => {
+                if (!o.find((v) => v.title == i.title)) {
                     o.push(i);
                 }
                 return o;
             }, []);
             result = filteredCards;
-
             goodsContainer.innerHTML = '';
             cart(result);
-        } else if (!a.checked) {
+        }
+        else if (!a.checked) {
             result = result.filter((el) => {
                 if (a.id == el.category) {
                     return false;
-                } else return true;
+                }
+                else
+                    return true;
             });
             goodsContainer.innerHTML = '';
             filteredCards = result;
@@ -289,18 +259,18 @@ function filterSelect() {
 }
 filterSelect();
 // отслеживание изменений фильтров и фильтация
-
-const morefilteredCards: products[] = [];
-function checkOtherFilters(filteredCards: products[]) {
+const morefilteredCards = [];
+function checkOtherFilters(filteredCards) {
     const updateFilteredCards = filteredCards;
-    domFilter.brand.onchange = (el: Event) => {
+    domFilter.brand.onchange = (el) => {
         if (a.checked) {
-            a = el.target as HTMLInputElement;
+            a = el.target;
             const reg1 = new RegExp(a.id);
             updateFilteredCards.filter((card) => {
                 if (reg1.test(card.brand)) {
                     morefilteredCards.push(card);
-                } else {
+                }
+                else {
                     return false;
                 }
             });
@@ -309,35 +279,38 @@ function checkOtherFilters(filteredCards: products[]) {
         }
     };
 }
-let result1: products[] = [];
-let filteredCards1: products[] = [];
+let result1 = [];
+let filteredCards1 = [];
 function filterSelect1() {
-    domFilter.brand.onchange = (el: Event) => {
-        a = el.target as HTMLInputElement;
+    domFilter.brand.onchange = (el) => {
+        a = el.target;
         if (a.checked) {
-            dataCase.products.filter((card) => {
+            data_1.dataCase.products.filter((card) => {
                 if (card.brand == a.id) {
                     filteredCards1.push(card);
-                } else {
+                }
+                else {
                     return false;
                 }
             });
             checkOtherFilters1(filteredCards1);
-            filteredCards1 = filteredCards1.reduce((o: products[], i: products) => {
-                if (!o.find((v: products) => v.title == i.title)) {
+            filteredCards1 = filteredCards1.reduce((o, i) => {
+                if (!o.find((v) => v.title == i.title)) {
                     o.push(i);
                 }
                 return o;
             }, []);
             result1 = filteredCards1;
-
             goodsContainer.innerHTML = '';
             cart(result1);
-        } else if (!a.checked) {
+        }
+        else if (!a.checked) {
             result1 = result1.filter((el) => {
                 if (a.id == el.brand) {
                     return false;
-                } else return true;
+                }
+                else
+                    return true;
             });
             goodsContainer.innerHTML = '';
             filteredCards1 = result1;
@@ -347,17 +320,17 @@ function filterSelect1() {
     };
 }
 filterSelect1();
-
-const morefilteredCards1: products[] = [];
-function checkOtherFilters1(filteredCards: products[]) {
+const morefilteredCards1 = [];
+function checkOtherFilters1(filteredCards) {
     const updateFilteredCards = filteredCards;
-    domFilter.category.onchange = (el: Event) => {
-        a = el.target as HTMLInputElement;
+    domFilter.category.onchange = (el) => {
+        a = el.target;
         const reg1 = new RegExp(a.id);
         updateFilteredCards.filter((card) => {
             if (reg1.test(card.category)) {
                 morefilteredCards1.push(card);
-            } else {
+            }
+            else {
                 return false;
             }
         });
