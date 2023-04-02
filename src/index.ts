@@ -13,21 +13,25 @@ interface products {
     category: string;
     thumbnail: string;
     images: string[];
+    [index: string]: string | string[] | number;
 }
-type FiltersType = 'brand' | 'category';
 
 // interface FilteredProducts {
 //     [key in filtersType]: products[];
 // }
 
-const domFilter = {
+const domFilter: filter = {
     category: document.querySelector('.category__items') as HTMLElement,
     brand: document.querySelector('.brand__items') as HTMLElement,
 };
-
+type filter = {
+    category: HTMLElement;
+    brand: HTMLElement;
+    [index: string]: HTMLElement;
+};
 const goodsContainer: HTMLElement = document.querySelector('.goods__container') as HTMLElement;
 function cart(data: products[]): void {
-    for (let i = 0; i < dataCase.limit; i++) {
+    for (let i = 0; i < data.length; i++) {
         //Init cart elements
         const cart = document.createElement('div');
         const cartContainer = document.createElement('div');
@@ -232,7 +236,131 @@ function filterRander(by: Element, type: string) {
         by?.append(itemContainer);
     }
 }
-function allChecked(type) {
+
+filterRander(domFilter.category as Element, 'category');
+filterRander(domFilter.brand as Element, 'brand');
+
+const filtersType: string[] = ['category', 'brand'];
+let result: products[] = [];
+let filteredCards: products[] = [];
+let a: HTMLInputElement;
+let morefilteredCards: products[] = [];
+let localCard: products[];
+
+function duplicate(filteredCards: products[]): products[] {
+    return filteredCards.reduce((o: products[], i: products) => {
+        if (!o.find((v: products) => v.title == i.title)) {
+            o.push(i);
+        }
+        return o;
+    }, []);
+}
+let elemType: string;
+
+const set = new Set();
+function filterSelect(filterType: string) {
+    domFilter[filterType].onchange = (el: Event) => {
+        if (filterType == 'brand') {
+            elemType = 'category';
+        }
+        if (filterType == 'category') {
+            elemType = 'brand';
+        }
+        a = el.target as HTMLInputElement;
+        if (a.checked) {
+            dataCase.products.filter((card: products) => {
+                if (card[filterType] == a.id) {
+                    filteredCards.push(card);
+                } else {
+                    return false;
+                }
+            });
+            filteredCards = duplicate(filteredCards);
+            localCard = filteredCards;
+            result = filteredCards;
+            if (filterType == 'brand') {
+                checkOtherFilters(filteredCards, 'category');
+            } else if (filterType == 'category') {
+                checkOtherFilters(filteredCards, 'brand');
+            }
+            // console.log(morefilteredCards);
+            // console.log(result);
+            if (morefilteredCards.length) {
+                morefilteredCards.forEach((el) => {
+                    set.add(el.elemType);
+                });
+                result = result.filter((card) => {
+                    if (set.has(card[elemType])) {
+                        return true;
+                    } else return false;
+                });
+            }
+            goodsContainer.innerHTML = '';
+        } else if (!a.checked) {
+            result = result.filter((el) => {
+                if (a.id == el[filterType]) {
+                    return false;
+                } else return true;
+            });
+            localCard = localCard.filter((el) => {
+                if (a.id == el[filterType]) {
+                    return false;
+                } else return true;
+            });
+            goodsContainer.innerHTML = '';
+            filteredCards = result;
+            allChecked(filterType, dataCase.products);
+        }
+        cart(result);
+    };
+}
+filtersType.forEach((type: string) => filterSelect(type));
+
+function checkOtherFilters(filteredCards: products[], type: string) {
+    const updateFilteredCards = filteredCards;
+    domFilter[type].onchange = (el: Event) => {
+        a = el.target as HTMLInputElement;
+        if (a.checked) {
+            set.add(a.id);
+            updateFilteredCards.filter((card) => {
+                if (card[type] == a.id) {
+                    morefilteredCards.push(card);
+                } else {
+                    return false;
+                }
+            });
+            result = morefilteredCards;
+            result = result.filter((card) => {
+                if (set.has(card[type])) {
+                    return true;
+                } else return false;
+            });
+            goodsContainer.innerHTML = '';
+        } else if (!a.checked) {
+            if (set.has(a.id)) {
+                set.delete(a.id);
+            }
+            morefilteredCards = morefilteredCards.filter((el) => {
+                if (a.id == el[type]) {
+                    return false;
+                } else return true;
+            });
+            result = morefilteredCards;
+            result = result.filter((card) => {
+                if (set.has(card[type])) {
+                    return true;
+                } else return false;
+            });
+            goodsContainer.innerHTML = '';
+            allChecked(type, localCard);
+            console.log(result);
+        }
+        if (set.size != 0) cart(result);
+    };
+}
+
+// отслеживание изменений фильтров и фильтация
+function allChecked(type: string, data: products[]) {
     const checkbox = domFilter[type].querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
     let elemChecked = false;
     checkbox.forEach((el) => {
@@ -241,128 +369,178 @@ function allChecked(type) {
         }
     });
     if (elemChecked == false) {
+        result = localCard;
         goodsContainer.innerHTML = '';
-        cart(dataCase.products);
+        cart(data);
     }
 }
+// function checkOtherFilters(filteredCards: products[], type: string) {
+//     const updateFilteredCards = filteredCards;
+//     domFilter[type].onchange = (el: Event) => {
+//         a = el.target as HTMLInputElement;
+//         if (a.checked) {
+//             updateFilteredCards.filter((card) => {
+//                 if (card[type] == a.id) {
+//                     morefilteredCards.push(card);
+//                 } else {
+//                     return false;
+//                 }
+//             });
+//             goodsContainer.innerHTML = '';
+//         } else if (!a.checked) {
+//             morefilteredCards = morefilteredCards.filter((el) => {
+//                 if (a.id == el[type]) {
+//                     return false;
+//                 } else return true;
+//             });
+//             goodsContainer.innerHTML = '';
+//             allChecked(type, result);
+//         }
+//         cart(morefilteredCards);
+//     };
+// }
 
-filterRander(domFilter.category as Element, 'category');
-filterRander(domFilter.brand as Element, 'brand');
+// let result: products[] = [];
+// let filteredCards: products[] = [];
+// let a: HTMLInputElement;
+// function filterSelect() {
+//     domFilter.category.onchange = (el: Event) => {
+//         a = el.target as HTMLInputElement;
+//         if (a.checked) {
+//             dataCase.products.filter((card) => {
+//                 if (card.category == a.id) {
+//                     filteredCards.push(card);
+//                 } else {
+//                     return false;
+//                 }
+//             });
+//             checkOtherFilters(filteredCards);
+//             filteredCards = filteredCards.reduce((o: products[], i: products) => {
+//                 if (!o.find((v: products) => v.title == i.title)) {
+//                     o.push(i);
+//                 }
+//                 return o;
+//             }, []);
+//             result = filteredCards;
+//             goodsContainer.innerHTML = '';
+//             cart(result);
+//         } else if (!a.checked) {
+//             result = result.filter((el) => {
+//                 if (a.id == el.category) {
+//                     return false;
+//                 } else return true;
+//             });
+//             goodsContainer.innerHTML = '';
+//             filteredCards = result;
+//             allChecked('category', dataCase.products);
+//             cart(result);
+//         }
+//     };
+// }
+// filterSelect();
 
-let result: products[] = [];
-let filteredCards: products[] = [];
-let a: HTMLInputElement;
-function filterSelect() {
-    domFilter.category.onchange = (el: Event) => {
-        a = el.target as HTMLInputElement;
-        if (a.checked) {
-            dataCase.products.filter((card) => {
-                if (card.category == a.id) {
-                    filteredCards.push(card);
-                } else {
-                    return false;
-                }
-            });
-            checkOtherFilters(filteredCards);
-            filteredCards = filteredCards.reduce((o: products[], i: products) => {
-                if (!o.find((v: products) => v.title == i.title)) {
-                    o.push(i);
-                }
-                return o;
-            }, []);
-            result = filteredCards;
+// function allChecked(type: string, data: products[]) {
+//     const checkbox = domFilter[type].querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
+//     let elemChecked = false;
+//     checkbox.forEach((el) => {
+//         if (el.checked) {
+//             elemChecked = true;
+//         }
+//     });
+//     if (elemChecked == false) {
+//         goodsContainer.innerHTML = '';
+//         cart(data);
+//     }
+// }
 
-            goodsContainer.innerHTML = '';
-            cart(result);
-        } else if (!a.checked) {
-            result = result.filter((el) => {
-                if (a.id == el.category) {
-                    return false;
-                } else return true;
-            });
-            goodsContainer.innerHTML = '';
-            filteredCards = result;
-            allChecked('category');
-            cart(result);
-        }
-    };
-}
-filterSelect();
-// отслеживание изменений фильтров и фильтация
+// let morefilteredCards: products[] = [];
+// function checkOtherFilters(filteredCards: products[]) {
+//     const updateFilteredCards = filteredCards;
+//     domFilter.brand.onchange = (el: Event) => {
+//         a = el.target as HTMLInputElement;
+//         if (a.checked) {
+//             updateFilteredCards.filter((card) => {
+//                 if (card.brand == a.id) {
+//                     morefilteredCards.push(card);
+//                 } else {
+//                     return false;
+//                 }
+//             });
+//             goodsContainer.innerHTML = '';
+//             cart(morefilteredCards);
+//         } else if (!a.checked) {
+//             morefilteredCards = morefilteredCards.filter((el) => {
+//                 if (a.id == el.brand) {
+//                     return false;
+//                 } else return true;
+//             });
+//             goodsContainer.innerHTML = '';
+//             allChecked('brand', result);
+//             cart(morefilteredCards);
+//         }
+//     };
+// }
 
-const morefilteredCards: products[] = [];
-function checkOtherFilters(filteredCards: products[]) {
-    const updateFilteredCards = filteredCards;
-    domFilter.brand.onchange = (el: Event) => {
-        if (a.checked) {
-            a = el.target as HTMLInputElement;
-            const reg1 = new RegExp(a.id);
-            updateFilteredCards.filter((card) => {
-                if (reg1.test(card.brand)) {
-                    morefilteredCards.push(card);
-                } else {
-                    return false;
-                }
-            });
-            goodsContainer.innerHTML = '';
-            cart(morefilteredCards);
-        }
-    };
-}
-let result1: products[] = [];
-let filteredCards1: products[] = [];
-function filterSelect1() {
-    domFilter.brand.onchange = (el: Event) => {
-        a = el.target as HTMLInputElement;
-        if (a.checked) {
-            dataCase.products.filter((card) => {
-                if (card.brand == a.id) {
-                    filteredCards1.push(card);
-                } else {
-                    return false;
-                }
-            });
-            checkOtherFilters1(filteredCards1);
-            filteredCards1 = filteredCards1.reduce((o: products[], i: products) => {
-                if (!o.find((v: products) => v.title == i.title)) {
-                    o.push(i);
-                }
-                return o;
-            }, []);
-            result1 = filteredCards1;
+// function filterSelectBrand() {
+//     domFilter.brand.onchange = (el: Event) => {
+//         a = el.target as HTMLInputElement;
+//         if (a.checked) {
+//             dataCase.products.filter((card) => {
+//                 if (card.brand == a.id) {
+//                     filteredCards.push(card);
+//                 } else {
+//                     return false;
+//                 }
+//             });
+//             checkOtherFilters1(filteredCards);
+//             filteredCards = filteredCards.reduce((o: products[], i: products) => {
+//                 if (!o.find((v: products) => v.title == i.title)) {
+//                     o.push(i);
+//                 }
+//                 return o;
+//             }, []);
+//             result = filteredCards;
+//             goodsContainer.innerHTML = '';
+//             cart(result);
+//         } else if (!a.checked) {
+//             result = result.filter((el) => {
+//                 if (a.id == el.brand) {
+//                     return false;
+//                 } else return true;
+//             });
+//             goodsContainer.innerHTML = '';
+//             filteredCards = result;
+//             allChecked('brand', dataCase.products);
+//             cart(result);
+//         }
+//     };
+// }
 
-            goodsContainer.innerHTML = '';
-            cart(result1);
-        } else if (!a.checked) {
-            result1 = result1.filter((el) => {
-                if (a.id == el.brand) {
-                    return false;
-                } else return true;
-            });
-            goodsContainer.innerHTML = '';
-            filteredCards1 = result1;
-            allChecked('brand');
-            cart(result1);
-        }
-    };
-}
-filterSelect1();
+// filterSelectBrand();
 
-const morefilteredCards1: products[] = [];
-function checkOtherFilters1(filteredCards: products[]) {
-    const updateFilteredCards = filteredCards;
-    domFilter.category.onchange = (el: Event) => {
-        a = el.target as HTMLInputElement;
-        const reg1 = new RegExp(a.id);
-        updateFilteredCards.filter((card) => {
-            if (reg1.test(card.category)) {
-                morefilteredCards1.push(card);
-            } else {
-                return false;
-            }
-        });
-        goodsContainer.innerHTML = '';
-        cart(morefilteredCards1);
-        filterSelect();
-    };
-}
+// function checkOtherFilters1(filteredCards: products[]) {
+//     const updateFilteredCards = filteredCards;
+//     domFilter.category.onchange = (el: Event) => {
+//         a = el.target as HTMLInputElement;
+//         if (a.checked) {
+//             updateFilteredCards.filter((card) => {
+//                 if (card.category == a.id) {
+//                     morefilteredCards.push(card);
+//                 } else {
+//                     return false;
+//                 }
+//             });
+//             goodsContainer.innerHTML = '';
+//             cart(morefilteredCards);
+//         } else if (!a.checked) {
+//             morefilteredCards = morefilteredCards.filter((el) => {
+//                 if (a.id == el.category) {
+//                     return false;
+//                 } else return true;
+//             });
+//             goodsContainer.innerHTML = '';
+//             allChecked('category', result);
+//             cart(morefilteredCards);
+//         }
+//     };
+// }
