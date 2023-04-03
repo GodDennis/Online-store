@@ -242,7 +242,7 @@ filterRander(domFilter.brand as Element, 'brand');
 
 const filtersType: string[] = ['category', 'brand'];
 let result: products[] = [];
-const filteredCards: products[] = [];
+let filteredCards: products[] = [];
 let a: HTMLInputElement;
 let secondresult: products[] = [];
 let localCard: products[];
@@ -250,7 +250,7 @@ let localCard: products[];
 const setfirst = new Set();
 // сет при первом нажатии на второй выбраный фильтр
 const setsecond = new Set();
-let elemType: string;
+let elemType: string | undefined;
 
 function duplicate(filteredCards: products[]): products[] {
     return filteredCards.reduce((o: products[], i: products) => {
@@ -298,6 +298,7 @@ function filterSelect(filterType: string) {
             cart(localCard);
         } else cart(result);
     };
+    resetFilters();
 }
 filtersType.forEach((type: string) => filterSelect(type));
 
@@ -345,173 +346,22 @@ function allChecked(type: string, data: products[]) {
         cart(data);
     }
 }
-// function checkOtherFilters(filteredCards: products[], type: string) {
-//     const updateFilteredCards = filteredCards;
-//     domFilter[type].onchange = (el: Event) => {
-//         a = el.target as HTMLInputElement;
-//         if (a.checked) {
-//             updateFilteredCards.filter((card) => {
-//                 if (card[type] == a.id) {
-//                     morefilteredCards.push(card);
-//                 } else {
-//                     return false;
-//                 }
-//             });
-//             goodsContainer.innerHTML = '';
-//         } else if (!a.checked) {
-//             morefilteredCards = morefilteredCards.filter((el) => {
-//                 if (a.id == el[type]) {
-//                     return false;
-//                 } else return true;
-//             });
-//             goodsContainer.innerHTML = '';
-//             allChecked(type, result);
-//         }
-//         cart(morefilteredCards);
-//     };
-// }
 
-// let result: products[] = [];
-// let filteredCards: products[] = [];
-// let a: HTMLInputElement;
-// function filterSelect() {
-//     domFilter.category.onchange = (el: Event) => {
-//         a = el.target as HTMLInputElement;
-//         if (a.checked) {
-//             dataCase.products.filter((card) => {
-//                 if (card.category == a.id) {
-//                     filteredCards.push(card);
-//                 } else {
-//                     return false;
-//                 }
-//             });
-//             checkOtherFilters(filteredCards);
-//             filteredCards = filteredCards.reduce((o: products[], i: products) => {
-//                 if (!o.find((v: products) => v.title == i.title)) {
-//                     o.push(i);
-//                 }
-//                 return o;
-//             }, []);
-//             result = filteredCards;
-//             goodsContainer.innerHTML = '';
-//             cart(result);
-//         } else if (!a.checked) {
-//             result = result.filter((el) => {
-//                 if (a.id == el.category) {
-//                     return false;
-//                 } else return true;
-//             });
-//             goodsContainer.innerHTML = '';
-//             filteredCards = result;
-//             allChecked('category', dataCase.products);
-//             cart(result);
-//         }
-//     };
-// }
-// filterSelect();
-
-// function allChecked(type: string, data: products[]) {
-//     const checkbox = domFilter[type].querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
-//     let elemChecked = false;
-//     checkbox.forEach((el) => {
-//         if (el.checked) {
-//             elemChecked = true;
-//         }
-//     });
-//     if (elemChecked == false) {
-//         goodsContainer.innerHTML = '';
-//         cart(data);
-//     }
-// }
-
-// let morefilteredCards: products[] = [];
-// function checkOtherFilters(filteredCards: products[]) {
-//     const updateFilteredCards = filteredCards;
-//     domFilter.brand.onchange = (el: Event) => {
-//         a = el.target as HTMLInputElement;
-//         if (a.checked) {
-//             updateFilteredCards.filter((card) => {
-//                 if (card.brand == a.id) {
-//                     morefilteredCards.push(card);
-//                 } else {
-//                     return false;
-//                 }
-//             });
-//             goodsContainer.innerHTML = '';
-//             cart(morefilteredCards);
-//         } else if (!a.checked) {
-//             morefilteredCards = morefilteredCards.filter((el) => {
-//                 if (a.id == el.brand) {
-//                     return false;
-//                 } else return true;
-//             });
-//             goodsContainer.innerHTML = '';
-//             allChecked('brand', result);
-//             cart(morefilteredCards);
-//         }
-//     };
-// }
-
-// function filterSelectBrand() {
-//     domFilter.brand.onchange = (el: Event) => {
-//         a = el.target as HTMLInputElement;
-//         if (a.checked) {
-//             dataCase.products.filter((card) => {
-//                 if (card.brand == a.id) {
-//                     filteredCards.push(card);
-//                 } else {
-//                     return false;
-//                 }
-//             });
-//             checkOtherFilters1(filteredCards);
-//             filteredCards = filteredCards.reduce((o: products[], i: products) => {
-//                 if (!o.find((v: products) => v.title == i.title)) {
-//                     o.push(i);
-//                 }
-//                 return o;
-//             }, []);
-//             result = filteredCards;
-//             goodsContainer.innerHTML = '';
-//             cart(result);
-//         } else if (!a.checked) {
-//             result = result.filter((el) => {
-//                 if (a.id == el.brand) {
-//                     return false;
-//                 } else return true;
-//             });
-//             goodsContainer.innerHTML = '';
-//             filteredCards = result;
-//             allChecked('brand', dataCase.products);
-//             cart(result);
-//         }
-//     };
-// }
-
-// filterSelectBrand();
-
-// function checkOtherFilters1(filteredCards: products[]) {
-//     const updateFilteredCards = filteredCards;
-//     domFilter.category.onchange = (el: Event) => {
-//         a = el.target as HTMLInputElement;
-//         if (a.checked) {
-//             updateFilteredCards.filter((card) => {
-//                 if (card.category == a.id) {
-//                     morefilteredCards.push(card);
-//                 } else {
-//                     return false;
-//                 }
-//             });
-//             goodsContainer.innerHTML = '';
-//             cart(morefilteredCards);
-//         } else if (!a.checked) {
-//             morefilteredCards = morefilteredCards.filter((el) => {
-//                 if (a.id == el.category) {
-//                     return false;
-//                 } else return true;
-//             });
-//             goodsContainer.innerHTML = '';
-//             allChecked('category', result);
-//             cart(morefilteredCards);
-//         }
-//     };
-// }
+function resetFilters() {
+    const reset = document.querySelector('.filter__reset') as HTMLButtonElement;
+    reset?.addEventListener('click', () => {
+        goodsContainer.innerHTML = '';
+        cart(dataCase.products);
+        const checkbox = document.querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
+        for (let i = 0; i < checkbox.length; i++) {
+            checkbox[i].checked = false;
+        }
+        result = [];
+        filteredCards = [];
+        secondresult = [];
+        localCard = [];
+        setfirst.clear();
+        setsecond.clear();
+        elemType = undefined;
+    });
+}
