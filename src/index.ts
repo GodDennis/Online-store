@@ -242,10 +242,15 @@ filterRander(domFilter.brand as Element, 'brand');
 
 const filtersType: string[] = ['category', 'brand'];
 let result: products[] = [];
-let filteredCards: products[] = [];
+const filteredCards: products[] = [];
 let a: HTMLInputElement;
-let morefilteredCards: products[] = [];
+let secondresult: products[] = [];
 let localCard: products[];
+// сет при первом нажатии на первый выбраный фильтр
+const setfirst = new Set();
+// сет при первом нажатии на второй выбраный фильтр
+const setsecond = new Set();
+let elemType: string;
 
 function duplicate(filteredCards: products[]): products[] {
     return filteredCards.reduce((o: products[], i: products) => {
@@ -255,107 +260,74 @@ function duplicate(filteredCards: products[]): products[] {
         return o;
     }, []);
 }
-let elemType: string;
 
-const set = new Set();
 function filterSelect(filterType: string) {
     domFilter[filterType].onchange = (el: Event) => {
-        if (filterType == 'brand') {
-            elemType = 'category';
-        }
-        if (filterType == 'category') {
-            elemType = 'brand';
-        }
         a = el.target as HTMLInputElement;
+        setfirst.add(a.id);
+        filterType == 'brand' ? (elemType = 'category') : (elemType = 'brand');
         if (a.checked) {
             dataCase.products.filter((card: products) => {
-                if (card[filterType] == a.id) {
+                if (setfirst.has(card[filterType])) {
                     filteredCards.push(card);
                 } else {
                     return false;
                 }
             });
-            filteredCards = duplicate(filteredCards);
-            localCard = filteredCards;
             result = filteredCards;
-            if (filterType == 'brand') {
-                checkOtherFilters(filteredCards, 'category');
-            } else if (filterType == 'category') {
-                checkOtherFilters(filteredCards, 'brand');
-            }
-            // console.log(morefilteredCards);
-            // console.log(result);
-            if (morefilteredCards.length) {
-                morefilteredCards.forEach((el) => {
-                    set.add(el.elemType);
-                });
-                result = result.filter((card) => {
-                    if (set.has(card[elemType])) {
-                        return true;
-                    } else return false;
-                });
-            }
+            checkOtherFilters(result, elemType);
             goodsContainer.innerHTML = '';
         } else if (!a.checked) {
+            setfirst.delete(a.id);
             result = result.filter((el) => {
                 if (a.id == el[filterType]) {
                     return false;
                 } else return true;
             });
-            localCard = localCard.filter((el) => {
-                if (a.id == el[filterType]) {
-                    return false;
-                } else return true;
-            });
             goodsContainer.innerHTML = '';
-            filteredCards = result;
-            allChecked(filterType, dataCase.products);
+            setsecond.size == 0 ? allChecked(filterType, dataCase.products) : allChecked(filterType, secondresult);
         }
-        cart(result);
+        // отображение повторного нажатие на первый фильтр
+        if (setsecond.size) {
+            localCard = filteredCards.filter((el) => {
+                if (setsecond.has(el.brand) && setfirst.has(el.category)) {
+                    return true;
+                } else false;
+            });
+            localCard = duplicate(localCard);
+            cart(localCard);
+        } else cart(result);
     };
 }
 filtersType.forEach((type: string) => filterSelect(type));
 
 function checkOtherFilters(filteredCards: products[], type: string) {
-    const updateFilteredCards = filteredCards;
+    const anotherFiltered = result;
     domFilter[type].onchange = (el: Event) => {
         a = el.target as HTMLInputElement;
+        setsecond.add(a.id);
         if (a.checked) {
-            set.add(a.id);
-            updateFilteredCards.filter((card) => {
-                if (card[type] == a.id) {
-                    morefilteredCards.push(card);
+            anotherFiltered.filter((card) => {
+                if (setsecond.has(card[type])) {
+                    secondresult.push(card);
                 } else {
                     return false;
                 }
-            });
-            result = morefilteredCards;
-            result = result.filter((card) => {
-                if (set.has(card[type])) {
-                    return true;
-                } else return false;
+                secondresult = duplicate(secondresult);
             });
             goodsContainer.innerHTML = '';
         } else if (!a.checked) {
-            if (set.has(a.id)) {
-                set.delete(a.id);
-            }
-            morefilteredCards = morefilteredCards.filter((el) => {
+            setsecond.delete(a.id);
+            secondresult = secondresult.filter((el) => {
                 if (a.id == el[type]) {
                     return false;
                 } else return true;
             });
-            result = morefilteredCards;
-            result = result.filter((card) => {
-                if (set.has(card[type])) {
-                    return true;
-                } else return false;
-            });
             goodsContainer.innerHTML = '';
-            allChecked(type, localCard);
-            console.log(result);
+            allChecked(type, result);
+            if (setfirst.size == 0 && setsecond.size == 0) cart(dataCase.products);
         }
-        if (set.size != 0) cart(result);
+        cart(secondresult);
     };
 }
 
@@ -369,7 +341,6 @@ function allChecked(type: string, data: products[]) {
         }
     });
     if (elemChecked == false) {
-        result = localCard;
         goodsContainer.innerHTML = '';
         cart(data);
     }
