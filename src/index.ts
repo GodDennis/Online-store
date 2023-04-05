@@ -279,6 +279,11 @@ function filterSelect(filterType: string) {
             goodsContainer.innerHTML = '';
         } else if (!a.checked) {
             setfirst.delete(a.id);
+            filteredCards = filteredCards.filter((el) => {
+                if (a.id == el[filterType]) {
+                    return false;
+                } else return true;
+            });
             result = result.filter((el) => {
                 if (a.id == el[filterType]) {
                     return false;
@@ -287,6 +292,7 @@ function filterSelect(filterType: string) {
             goodsContainer.innerHTML = '';
             setsecond.size == 0 ? allChecked(filterType, dataCase.products) : allChecked(filterType, secondresult);
         }
+        result = duplicate(result);
         // отображение повторного нажатие на первый фильтр
         if (setsecond.size) {
             localCard = filteredCards.filter((el) => {
@@ -303,8 +309,13 @@ function filterSelect(filterType: string) {
 filtersType.forEach((type: string) => filterSelect(type));
 
 function checkOtherFilters(filteredCards: products[], type: string) {
-    const anotherFiltered = result;
     domFilter[type].onchange = (el: Event) => {
+        let anotherFiltered;
+        if (result.length) {
+            anotherFiltered = result;
+        } else anotherFiltered = dataCase.products;
+
+        console.log(result);
         a = el.target as HTMLInputElement;
         setsecond.add(a.id);
         if (a.checked) {
