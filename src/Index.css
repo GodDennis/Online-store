@@ -10,7 +10,6 @@ body {
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 30px;
-  background-color: #f1eadc;
 }
 
 header {
@@ -25,6 +24,9 @@ header {
 header .shop-bag {
   cursor: pointer;
 }
+header .logo {
+  cursor: pointer;
+}
 
 .shop-bag:hover svg path {
   fill: #6e9c9f;
@@ -35,6 +37,10 @@ header .shop-bag {
   display: flex;
   max-width: 1600px;
   padding: 0 0 30px 0;
+}
+
+.hide {
+  display: none;
 }
 
 .filter {
@@ -212,4 +218,66 @@ header .shop-bag {
   max-width: 200px;
   background-color: #f1eadc;
   opacity: 80%;
+}
+
+.bagCartContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border: 1px solid #e2e2e2;
+  border-radius: 25px;
+  margin: 10px 0;
+  padding: 15px;
+  position: relative;
+}
+.bagCartContainer .remove {
+  cursor: pointer;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  right: 20px;
+  top: 15;
+}
+.bagCartContainer .remove .right {
+  transform: translate(25%, 640%) rotate(-45deg);
+  display: block;
+  width: 20px;
+  height: 1px;
+  background-color: black;
+}
+.bagCartContainer .remove .left {
+  transform: translate(25%, 740%) rotate(45deg);
+  display: block;
+  width: 20px;
+  height: 1px;
+  background-color: black;
+}
+.bagCartContainer .bag__info {
+  display: flex;
+  gap: 50px;
+}
+.bagCartContainer .bag__info .bag__img {
+  display: block;
+  width: 150px;
+  height: 150px;
+}
+.bagCartContainer .bag__info .bag__cart-info {
+  max-width: 80%;
+}
+.bagCartContainer .bag__info .bag__cart-info .bag__cart-name {
+  font-size: 20px;
+  line-height: 1.334;
+}
+.bagCartContainer .bag__info .bag__cart-info .bag__cart-descr {
+  font-size: 16px;
+  line-height: 1.334;
+}
+.bagCartContainer .bag__cart-price {
+  white-space: nowrap;
+  font-size: 20px;
+  line-height: 1.334;
+  align-self: center;
+}
+.bagCartContainer .bag__cart-price .cartPrice {
+  text-decoration: line-through;
 }

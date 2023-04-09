@@ -9,7 +9,7 @@ body {
     max-width: 1600px;
     margin: 0 auto;
     padding: 0 30px;
-    background-color: #f1eadc;
+    // background-color: #f1eadc;
 }
 header {
     padding: 20px;
@@ -22,6 +22,9 @@ header {
     .shop-bag {
         cursor: pointer;
     }
+    .logo {
+        cursor: pointer;
+    }
 }
 .shop-bag:hover svg path {
     fill: #6e9c9f;
@@ -32,6 +35,9 @@ header {
     display: flex;
     max-width: 1600px;
     padding: 0 0 30px 0;
+}
+.hide {
+    display: none;
 }
 .filter {
     background-color: #f1eadc;
@@ -206,3 +212,69 @@ header {
     background-color: #f1eadc;
     opacity: 80%;
 }
+
+.bagCartContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border: 1px solid #e2e2e2;
+    border-radius: 25px;
+    margin: 10px 0;
+    padding: 15px;
+    position: relative;
+    .remove {
+        cursor: pointer;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        right: 20px;
+        top: 15;
+        .right {
+            transform: translate(25%, 640%) rotate(-45deg);
+            display: block;
+            width: 20px;
+            height: 1px;
+            background-color: black;
+        }
+        .left {
+            transform: translate(25%, 740%) rotate(45deg);
+            display: block;
+            width: 20px;
+            height: 1px;
+            background-color: black;
+        }
+    }
+    .bag__info {
+        display: flex;
+        gap: 50px;
+        .bag__img {
+            display: block;
+            width: 150px;
+            height: 150px;
+        }
+        .bag__cart-info {
+            max-width: 80%;
+            .bag__cart-name {
+                font-size: 20px;
+                line-height: 1.334;
+            }
+            .bag__cart-descr {
+                font-size: 16px;
+                line-height: 1.334;
+            }
+        }
+    }
+    .bag__cart-price {
+        white-space: nowrap;
+        font-size: 20px;
+        line-height: 1.334;
+        align-self: center;
+        .cartPrice {
+            text-decoration: line-through;
+        }
+    }
+}
+// bag__cart-price
+// bag__cart-name
+
+// bag__img

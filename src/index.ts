@@ -1,6 +1,8 @@
 import './nullstyle.css';
 import './Index.css';
 import { dataCase } from './data';
+import { shopBag, addCard } from './shop-bag';
+
 interface products {
     id: number;
     title: string;
@@ -43,6 +45,7 @@ function cart(data: products[]): void {
         const descBrand = document.createElement('div');
         const descPrice = document.createElement('div');
         const descDiscount = document.createElement('div');
+        const descDiscription = document.createElement('div');
         const descRating = document.createElement('div');
         const descStock = document.createElement('div');
         const descPriceSpan = document.createElement('span');
@@ -54,6 +57,7 @@ function cart(data: products[]): void {
         //classAdd
 
         cart.classList.add('cart');
+        descDiscription.classList.add('descriprion__text', 'hide');
         cartContainer.classList.add('cartContainer');
         cartName.classList.add('cartName');
         cartDescription.classList.add('cartDescription');
@@ -84,7 +88,7 @@ function cart(data: products[]): void {
         descCategory.innerText = `Category: `;
         descCategorySpan.innerText = `${data[i].category}`;
         //
-        descDiscountSpan.innerText = `${data[i].discountPercentage}`;
+        descDiscountSpan.innerText = `${data[i].discountPercentage}%`;
         descDiscount.innerText = `Discount: `;
         //
         descPrice.innerText = `Price: `;
@@ -95,6 +99,8 @@ function cart(data: products[]): void {
         //
         descStockSpan.innerText = `${data[i].stock}`;
         descStock.innerText = `Stock: `;
+        //
+        descDiscription.innerText = `${data[i].description}`;
         //
         cartContainer.style.backgroundImage = `url(${data[i].images[0]})`;
 
@@ -110,6 +116,7 @@ function cart(data: products[]): void {
         cartDescription.append(descPrice);
         cartDescription.append(descRating);
         cartDescription.append(descStock);
+        cartDescription.append(descDiscription);
         cartContainer.append(cartAdd);
         cartContainer.append(cartLink);
 
@@ -376,3 +383,5 @@ function resetFilters() {
         elemType = undefined;
     });
 }
+shopBag();
+addCard();
