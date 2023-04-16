@@ -19,10 +19,13 @@ header {
   display: flex;
   gap: 40px;
   font-size: 20px;
-  background-color: #f1eadc;
+  color: #fff;
+  opacity: 60%;
+  background: black;
 }
 header .shop-bag {
   cursor: pointer;
+  fill: #fff;
 }
 header .logo {
   cursor: pointer;
@@ -44,13 +47,11 @@ header .logo {
 }
 
 .filter {
-  background-color: #f1eadc;
+  width: 293px;
+  border-right: 1px solid;
 }
 .filter .filter__container {
-  width: 400px;
   overflow: hidden;
-  border: 1px solid;
-  border-radius: 20px;
 }
 .filter .filter__container .filter__settings {
   display: flex;
@@ -65,9 +66,8 @@ header .logo {
 }
 .filter .filter__container .filter__preset {
   margin: 0 auto;
-  width: 300px;
+  width: 250px;
   height: 250px;
-  background-color: inherit;
   text-align: left;
   overflow: scroll;
   display: flex;
@@ -76,7 +76,6 @@ header .logo {
 }
 .filter .filter__container .filter__preset2 {
   margin: 0 auto;
-  background-color: inherit;
   height: 40px;
   display: flex;
   justify-content: start;
@@ -108,27 +107,24 @@ header .logo {
 }
 
 .product {
-  width: 100%;
-  align-self: stretch;
-  background-color: #f1eadc;
+  max-width: 80%;
 }
 .product .product__container {
   width: 100%;
-  height: 100%;
 }
 .product .product__container .settings__container {
-  padding: 10px 0 0 0;
+  max-width: 100%;
+  padding: 10px 0 0 20px;
   font-size: 16px;
-  background-color: #f1eadc;
   display: flex;
-  justify-content: space-around;
+  gap: 0px;
+  justify-content: start;
 }
 .product .product__container .settings__container .sort__list {
   border: 1px solid;
   border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
-  background-color: inherit;
 }
 .product .product__container .settings__container .sort__list:hover {
   color: #6e9c9f;
@@ -137,8 +133,7 @@ header .logo {
   color: #6e9c9f;
 }
 .product .product__container .settings__container .search {
-  font-size: 15px;
-  background-color: inherit;
+  font-size: 16px;
   border: solid 1px;
   border-radius: 20px;
   padding: 0 0 0 20px;
@@ -148,37 +143,82 @@ header .logo {
 }
 .product .product__container .goods {
   max-width: 100%;
+  margin: 0 auto;
 }
 .product .product__container .goods .goods__container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: start;
 }
 .product .product__container .goods .goods__container .cart {
   border: 1px solid;
   overflow: hidden;
-  border-radius: 20px;
   margin: 10px 10px;
   display: flex;
   flex-direction: column;
   width: 300px;
+  background-position-y: 20px;
+  background-repeat: no-repeat;
+  background-size: 300px 240px;
+  transition: all 2s ease-out;
+  position: relative;
+}
+.product .product__container .goods .goods__container .cart:hover .cartDescription {
+  transition: all 0.3s ease-out;
+  opacity: 80%;
+}
+.product .product__container .goods .goods__container .cart .cartDescription {
+  white-space: nowrap;
+  opacity: 0%;
+  margin-top: 165px;
+  padding: 0 0 0 10px;
+  font-family: "Raleway", sans-serif;
+  font-size: 16px;
+  width: 100%;
+  background-color: #fff;
+  color: black;
 }
 .product .product__container .goods .goods__container .cart .cartName {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  border-bottom: 1px solid;
   text-align: center;
-  border: 1px solid;
+  font-size: 20px;
+  background-color: #fff;
+  color: black;
+}
+.product .product__container .goods .goods__container .cart .cartPrice {
+  font-size: 20px;
+  font-family: "Raleway", sans-serif;
+  position: absolute;
+  top: 265px;
+  left: 10px;
 }
 .product .product__container .goods .goods__container .cart .cartContainer {
-  width: 300px;
-  height: 200px;
-  background-repeat: no-repeat;
-  background-size: 300px 200px;
+  position: relative;
+  width: 100%;
+  height: 330px;
 }
 .product .product__container .goods .goods__container .cart .cartContainer .cartAdd {
-  margin: 70px 50px;
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  width: 45%;
+  height: 35px;
   opacity: 80%;
+  background-color: black;
+  color: #fff;
 }
 .product .product__container .goods .goods__container .cart .cartContainer .cartLink {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  width: 45%;
+  height: 35px;
   opacity: 80%;
+  background-color: black;
+  color: #fff;
 }
 .product .product__container .goods .goods__container .hide {
   display: none;
@@ -196,7 +236,6 @@ header .logo {
   font-size: 16px;
   text-align: center;
   width: 100%;
-  background-color: #f1eadc;
 }
 
 .btn {
@@ -205,19 +244,10 @@ header .logo {
   border-radius: 5px;
   padding: 0 5px;
   font-size: 16px;
-  background-color: #f1eadc;
+  opacity: 60%;
 }
 .btn:hover {
   color: #6e9c9f;
-}
-
-.cartDescription {
-  border: 1px solid;
-  font-family: "Raleway", sans-serif;
-  font-size: 16px;
-  max-width: 200px;
-  background-color: #f1eadc;
-  opacity: 80%;
 }
 
 .bagCartContainer {

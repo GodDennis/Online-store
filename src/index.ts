@@ -2,7 +2,7 @@ import './nullstyle.css';
 import './Index.css';
 import { dataCase } from './data';
 import { shopBag, addCard } from './shop-bag';
-
+import { RenderCard } from './goodCard';
 interface products {
     id: number;
     title: string;
@@ -39,6 +39,7 @@ function cart(data: products[]): void {
         const cartContainer = document.createElement('div');
         const cartName = document.createElement('div');
         const cartDescription = document.createElement('div');
+        const cartPrice = document.createElement('div');
         const cartAdd = document.createElement('button');
         const cartLink = document.createElement('button');
         const descCategory = document.createElement('div');
@@ -57,6 +58,7 @@ function cart(data: products[]): void {
         //classAdd
 
         cart.classList.add('cart');
+        cartPrice.classList.add('cartPrice');
         descDiscription.classList.add('descriprion__text', 'hide');
         cartContainer.classList.add('cartContainer');
         cartName.classList.add('cartName');
@@ -79,7 +81,7 @@ function cart(data: products[]): void {
         descDiscountSpan.classList.add('discount');
         //
         cartName.innerText = data[i].title;
-        cartLink.innerText = 'Copy Link';
+        cartLink.innerText = 'Open';
         cartAdd.innerText = 'Add Cart';
         //
         descBrand.innerText = `Brand: `;
@@ -92,7 +94,8 @@ function cart(data: products[]): void {
         descDiscount.innerText = `Discount: `;
         //
         descPrice.innerText = `Price: `;
-        descPriceSpan.innerText = `${data[i].price}`;
+        descPriceSpan.innerText = `${data[i].price}$`;
+        cartPrice.innerText = `Price:${data[i].price}$`;
         //
         descRatingSpan.innerText = `${data[i].rating}`;
         descRating.innerText = `Rating: `;
@@ -102,7 +105,7 @@ function cart(data: products[]): void {
         //
         descDiscription.innerText = `${data[i].description}`;
         //
-        cartContainer.style.backgroundImage = `url(${data[i].images[0]})`;
+        cart.style.backgroundImage = `url(${data[i].images[0]})`;
 
         // insert elements of cart
 
@@ -119,7 +122,7 @@ function cart(data: products[]): void {
         cartDescription.append(descDiscription);
         cartContainer.append(cartAdd);
         cartContainer.append(cartLink);
-
+        cartContainer.append(cartPrice);
         //span description
         descPrice.append(descPriceSpan);
         descDiscount.append(descDiscountSpan);
@@ -137,10 +140,16 @@ const items: Element = document.querySelector('.goods__container') as HTMLElemen
 function ASCPrice(a: number) {
     for (let i = 0; i < items.children.length; i++) {
         for (let j = i; j < items.children.length; j++) {
-            if (
-                +items.children[i].children[1].children[0].children[a].children[0].innerHTML >
-                +items.children[j].children[1].children[0].children[a].children[0].innerHTML
-            ) {
+            let iIndex = items.children[i].children[1].children[0].children[a].children[0].innerHTML;
+            let jIndex = items.children[j].children[1].children[0].children[a].children[0].innerHTML;
+
+            if (iIndex.includes('$') || iIndex.includes('%')) {
+                iIndex = iIndex.slice(0, -1);
+            }
+            if (jIndex.includes('$') || jIndex.includes('%')) {
+                jIndex = jIndex.slice(0, -1);
+            }
+            if (+iIndex > +jIndex) {
                 const replacedNode = items.replaceChild(items.children[j], items.children[i]);
                 insertAfter(replacedNode, items.children[i]);
             }
@@ -155,10 +164,16 @@ function insertAfter(elem: Element, refElem: Element) {
 function DESCPrice(a: number) {
     for (let i = 0; i < items.children.length; i++) {
         for (let j = i; j < items.children.length; j++) {
-            if (
-                +items.children[i].children[1].children[0].children[a].children[0].innerHTML <
-                +items.children[j].children[1].children[0].children[a].children[0].innerHTML
-            ) {
+            let iIndex = items.children[i].children[1].children[0].children[a].children[0].innerHTML;
+            let jIndex = items.children[j].children[1].children[0].children[a].children[0].innerHTML;
+
+            if (iIndex.includes('$') || iIndex.includes('%')) {
+                iIndex = iIndex.slice(0, -1);
+            }
+            if (jIndex.includes('$') || jIndex.includes('%')) {
+                jIndex = jIndex.slice(0, -1);
+            }
+            if (+iIndex < +jIndex) {
                 const replacedNode = items.replaceChild(items.children[j], items.children[i]);
                 insertAfter(replacedNode, items.children[i]);
             }
@@ -385,3 +400,4 @@ function resetFilters() {
 }
 shopBag();
 addCard();
+RenderCard();

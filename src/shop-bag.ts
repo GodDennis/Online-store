@@ -1,7 +1,7 @@
-const main = document.querySelector('.main');
-const mainContainer = document.querySelector('.main__container');
+export const main = document.querySelector('.main') as HTMLElement;
+export const mainContainer = document.querySelector('.main__container');
 const bagScreen = document.createElement('div');
-const logo = document.querySelector('.logo');
+export const logo = document.querySelector('.logo');
 const total = document.querySelector('.sum') as HTMLElement;
 export function shopBag() {
     bagScreen.classList.add('bag__container', 'hide');
@@ -62,12 +62,13 @@ export function addCard() {
             bagCartInfo.append(cartInfo);
             cartInfo.append(cartName);
             cartInfo.append(cartDesc);
-            const price = cart[i].children[1].children[0].children[3].children[0].textContent as string;
+            const price = cart[i].children[1].children[0].children[3].children[0].textContent?.slice(0, -1) as string;
             const name = cart[i].children[0].textContent as string;
-            const ImgContainer = cart[i].children[1] as HTMLElement;
+            const ImgContainer = cart[i] as HTMLElement;
             const urlImg = ImgContainer.style.backgroundImage;
             const description = cart[i].children[1].children[0].children[6].textContent as string;
             const discount = cart[i].children[1].children[0].children[2].children[0].textContent as string;
+            console.log(cart[i]);
             bagInfoImg.src = urlImg.slice(5, -2);
             cartName.innerText = name;
             cartName.href = '#';
