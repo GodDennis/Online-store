@@ -12,49 +12,61 @@ export function RenderCard() {
         const stock = property.children[5].children[0].textContent;
         const description = property.children[6].textContent;
         const name = goodCards[i].children[0].textContent;
+        const card = document.createElement('div');
         let id: number;
         let img: string[] = [];
-        for (let j = 0; j < dataCase.limit; j++) {
-            if (dataCase.products[j].title == name) {
-                id = dataCase.products[j].id;
-                img = [...dataCase.products[j].images];
-            }
-        }
-        console.log(img);
-        goodCards[i].children[1].children[2].addEventListener('click', () => {
+        const render = function () {
             mainContainer?.classList.add('hide');
-            logo?.addEventListener('click', () => {
-                mainContainer?.classList.remove('hide');
-                card.classList.add('hide');
-            });
-
-            const card = document.createElement('div');
+            window.location.hash = `#card/${id}`;
             main?.append(card);
             card.classList.add('productCard');
             card.innerHTML = `
                     <div class='productcard__container'>
                         <div class='product__info'>
                             <div class='product__image'>
-                                <div><img src="${img[0]}" alt=""></div>
-                                <div><img src="${img[1]}" alt=""></div>
-                                <div><img src="${img[2]}" alt=""></div>
-                                <div><img src="${img[3]}" alt=""></div>
-                                <div><img src="${img[4]}" alt=""></div>
+                                <div><img class='img1' src="${img[0]}" alt=""></div>
+                                <div><img class='img2' src="${img[1]}" alt=""></div>
+                                <div><img class='img3' src="${img[2]}" alt=""></div>
+                                <div><img class='img4' src="${img[3]}" alt=""></div>
+                                <div><img class='img5' src="${img[4]}" alt=""></div>
                             </div>
                             <div class='product__text'>
                                 <div class='product__name'>${name}</div>
                                 <div class='product__desc'>${description}</div>
+                                <button class ='product__buy btn'>Buy now</button>
                             </div>
-                            <div class='product__characteristic'>
-                                <div class='product__rating'>${rating}</div>
-                                <div class='product__price'>${price}</div>
-                                <div class='product__discount'>${discount}</div>
-                                <div class='product__stock'>${stock}</div>
-                                <div class='product__brand'>${brand}</div>
-                                <div class='product__category'>${category}</div>
+                            <div class='product__characteristic'>Characteristic
+                                <div class='product__rating txt'>Rating: ${rating}</div>
+                                <div class='product__price txt'>Price: ${price}</div>
+                                <div class='product__discount txt'>Discount: ${discount}</div>
+                                <div class='product__stock txt'>Stock: ${stock}</div>
+                                <div class='product__brand txt'>Brand: ${brand}</div>
+                                <div class='product__category txt'>Category: ${category}</div>
                             </div>
                         </div>
                     </div>`;
-        });
+
+            logo?.addEventListener('click', () => {
+                mainContainer?.classList.remove('hide');
+                window.location.hash === '';
+                card?.remove();
+            });
+            const bag = document.querySelector('.shop-bag');
+            bag?.addEventListener('click', () => {
+                card?.remove();
+            });
+        };
+        for (let j = 0; j < dataCase.limit; j++) {
+            if (dataCase.products[j].title == name) {
+                id = dataCase.products[j].id;
+                img = [...dataCase.products[j].images];
+                card.id = `${id}`;
+                if (window.location.hash === `#card/${id}`) {
+                    window.addEventListener('load', render);
+                    window.addEventListener('hashchange', render);
+                }
+            }
+        }
+        goodCards[i].children[1].children[2].addEventListener('click', render);
     }
 }

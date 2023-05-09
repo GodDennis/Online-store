@@ -4,23 +4,24 @@
 }
 body {
   font-family: "Raleway", sans-serif;
+  background-color: #f2f3f7;
 }
 
 .container {
-  max-width: 1600px;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 30px;
 }
 
 header {
-  padding: 20px;
-  justify-content: space-between;
-  margin: 0 auto;
+  padding: 20px 0;
+  justify-content: space-around;
   display: flex;
   gap: 40px;
   font-size: 20px;
   color: #fff;
-  opacity: 60%;
   background: black;
 }
 header .shop-bag {
@@ -30,16 +31,27 @@ header .shop-bag {
 header .logo {
   cursor: pointer;
 }
+header .logo:hover {
+  color: orange;
+  transition: all ease 0.5s;
+}
 
 .shop-bag:hover svg path {
-  fill: #6e9c9f;
+  fill: orange;
   transition: all 0.5s;
+}
+
+.main {
+  position: relative;
+  flex: 1;
 }
 
 .main__container {
   display: flex;
-  max-width: 1600px;
+  max-width: 1263px;
   padding: 0 0 30px 0;
+  gap: 10px;
+  margin: 0 auto;
 }
 
 .hide {
@@ -48,31 +60,47 @@ header .logo {
 
 .filter {
   width: 293px;
-  border-right: 1px solid;
 }
 .filter .filter__container {
   overflow: hidden;
+  margin: 0 0 0 20px;
 }
 .filter .filter__container .filter__settings {
   display: flex;
   white-space: nowrap;
-  justify-content: space-around;
+  justify-content: flex-end;
 }
 .filter .filter__container .filter__border {
-  border: 1px solid;
-  border-radius: 20px;
-  margin: 10px;
+  margin: 20px 0 20px 0;
   padding: 10px;
+  background-color: #fff;
 }
 .filter .filter__container .filter__preset {
   margin: 0 auto;
   width: 250px;
-  height: 250px;
+  height: 345px;
+  gap: 5px;
   text-align: left;
-  overflow: scroll;
+  overflow-y: scroll;
   display: flex;
   justify-content: start;
   flex-direction: column;
+}
+.filter .filter__container .filter__preset::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: #f1f1f1;
+}
+.filter .filter__container .filter__preset::-webkit-scrollbar-thumb {
+  background-color: #11171a;
+  width: 1px;
+  border-radius: 10px;
+}
+.filter .filter__container .filter__preset::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  width: 1px;
+  height: 1px;
 }
 .filter .filter__container .filter__preset2 {
   margin: 0 auto;
@@ -95,11 +123,27 @@ header .logo {
   font-family: "Raleway", sans-serif;
   font-size: 16px;
 }
+.filter .filter__container .filter__copy {
+  display: none;
+}
+.filter .filter__container .filter__reset {
+  margin: 25px 10px 7px 0;
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+}
+.filter .filter__container .filter__reset:hover {
+  color: orange;
+  transition: all ease 0.5s;
+}
 .filter .Input {
-  font-size: 16px;
   color: black;
 }
 .filter .Label {
+  margin: 0 0 0 10px;
+  font-size: 16px;
+  line-height: 16px;
+  vertical-align: bottom;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -107,56 +151,61 @@ header .logo {
 }
 
 .product {
-  max-width: 80%;
+  max-width: 100%;
 }
 .product .product__container {
   width: 100%;
 }
 .product .product__container .settings__container {
   max-width: 100%;
-  padding: 10px 0 0 20px;
+  padding: 20px 10px 0 0px;
   font-size: 16px;
   display: flex;
-  gap: 0px;
-  justify-content: start;
+  gap: 20px;
+  justify-content: end;
 }
 .product .product__container .settings__container .sort__list {
+  width: 300px;
+  height: 50px;
   border: 1px solid;
-  border-radius: 20px;
   font-size: 16px;
   cursor: pointer;
 }
 .product .product__container .settings__container .sort__list:hover {
-  color: #6e9c9f;
-}
-.product .product__container .settings__container .sort__list:active {
-  color: #6e9c9f;
+  color: orange;
+  transition: all ease 0.5s;
 }
 .product .product__container .settings__container .search {
+  width: 300px;
   font-size: 16px;
   border: solid 1px;
-  border-radius: 20px;
   padding: 0 0 0 20px;
 }
 .product .product__container .settings__container .search:focus {
-  color: #6e9c9f;
+  color: orange;
 }
 .product .product__container .goods {
-  max-width: 100%;
+  max-width: 960px;
   margin: 0 auto;
 }
 .product .product__container .goods .goods__container {
-  display: flex;
+  margin: 0 auto;
+}
+.product .product__container .goods .goods__container .goods__flex {
+  padding: 10px 0 0 0;
+  display: inline-flex;
   flex-wrap: wrap;
 }
 .product .product__container .goods .goods__container .cart {
-  border: 1px solid;
+  box-shadow: 0 2px 11px 0 #e4e4e4;
+  background-color: #fff;
   overflow: hidden;
   margin: 10px 10px;
   display: flex;
   flex-direction: column;
   width: 300px;
-  background-position-y: 20px;
+  padding: 15px 0;
+  background-position-y: 45px;
   background-repeat: no-repeat;
   background-size: 300px 240px;
   transition: all 2s ease-out;
@@ -178,14 +227,14 @@ header .logo {
   color: black;
 }
 .product .product__container .goods .goods__container .cart .cartName {
-  position: absolute;
+  margin: 0 0 10px 0;
+  position: -webkit-sticky;
+  position: sticky;
   top: 0px;
   left: 0px;
   width: 100%;
-  border-bottom: 1px solid;
   text-align: center;
   font-size: 20px;
-  background-color: #fff;
   color: black;
 }
 .product .product__container .goods .goods__container .cart .cartPrice {
@@ -206,9 +255,12 @@ header .logo {
   bottom: 8px;
   width: 45%;
   height: 35px;
-  opacity: 80%;
   background-color: black;
   color: #fff;
+}
+.product .product__container .goods .goods__container .cart .cartContainer .cartAdd:hover {
+  transition: all ease 0.5s;
+  color: orange;
 }
 .product .product__container .goods .goods__container .cart .cartContainer .cartLink {
   position: absolute;
@@ -216,9 +268,12 @@ header .logo {
   bottom: 8px;
   width: 45%;
   height: 35px;
-  opacity: 80%;
   background-color: black;
   color: #fff;
+}
+.product .product__container .goods .goods__container .cart .cartContainer .cartLink:hover {
+  transition: all ease 0.5s;
+  color: orange;
 }
 .product .product__container .goods .goods__container .hide {
   display: none;
@@ -228,37 +283,58 @@ header .logo {
 }
 
 .footer {
-  padding: 10px 0 10px 0;
+  font-size: 20px;
+  color: #fff;
+  background: black;
+  min-width: 100%;
+  max-width: 1600px;
+  padding: 20px 30px 20px 30px;
   border-top: solid 1px black;
   font-family: "Raleway", sans-serif;
   font-weight: 500;
   font-style: italic;
   font-size: 16px;
   text-align: center;
-  width: 100%;
 }
 
 .btn {
   margin: 10px 0 0 0;
-  border: 1px solid;
   border-radius: 5px;
   padding: 0 5px;
   font-size: 16px;
-  opacity: 60%;
 }
-.btn:hover {
-  color: #6e9c9f;
+
+.bag__container {
+  max-width: 1263px;
+  margin: 0 auto;
+}
+.bag__container .bag__empty {
+  top: 35%;
+  left: 50%;
+  position: absolute;
+  font-size: 24px;
+  transform: translate(-50%, -50%);
+}
+.bag__container .bag__btn {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  height: 50px;
+  background-color: black;
+  color: #fff;
 }
 
 .bagCartContainer {
   display: flex;
   justify-content: space-between;
-  width: 100%;
   border: 1px solid #e2e2e2;
   border-radius: 25px;
   margin: 10px 0;
   padding: 15px;
   position: relative;
+  background-color: #fff;
 }
 .bagCartContainer .remove {
   cursor: pointer;
@@ -310,4 +386,63 @@ header .logo {
 }
 .bagCartContainer .bag__cart-price .cartPrice {
   text-decoration: line-through;
+}
+
+.productCard {
+  max-width: 1263px;
+  margin: 0 auto;
+}
+.productCard .productcard__container {
+  padding: 15px;
+}
+.productCard .productcard__container .product__info {
+  padding: 25px;
+  border-radius: 25px;
+  background-color: #fff;
+  border: 1px solid #e2e2e2;
+  display: flex;
+  justify-content: start;
+  gap: 30px;
+}
+.productCard .productcard__container .product__info .product__image {
+  position: relative;
+  min-width: 150px;
+  height: 150px;
+}
+.productCard .productcard__container .product__info .product__image div {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+}
+.productCard .productcard__container .product__info .product__image img {
+  width: 150px;
+  height: 150px;
+}
+.productCard .productcard__container .product__info .product__text {
+  position: relative;
+}
+.productCard .productcard__container .product__info .product__text .product__name {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+}
+.productCard .productcard__container .product__info .product__text .product__desc {
+  font-size: 16px;
+}
+.productCard .productcard__container .product__info .product__text .product__buy {
+  position: absolute;
+  bottom: 0;
+  width: 140px;
+  height: 35px;
+  opacity: 80%;
+  background-color: black;
+  color: #fff;
+}
+.productCard .productcard__container .product__characteristic {
+  margin: 0 0px 0 0;
+  height: 150px;
+  white-space: nowrap;
+  font-size: 16px;
+}
+.productCard .productcard__container .product__characteristic .txt {
+  margin: 5px;
 }

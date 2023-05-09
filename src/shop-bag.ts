@@ -1,8 +1,9 @@
 export const main = document.querySelector('.main') as HTMLElement;
 export const mainContainer = document.querySelector('.main__container');
-const bagScreen = document.createElement('div');
+export const bagScreen = document.createElement('div');
 export const logo = document.querySelector('.logo');
 const total = document.querySelector('.sum') as HTMLElement;
+let countTotal = 0;
 export function shopBag() {
     bagScreen.classList.add('bag__container', 'hide');
     //создаем контрейнер для корзины
@@ -12,21 +13,24 @@ export function shopBag() {
     bag?.addEventListener('click', renderBag);
     //возвращаемся на странцу товаров
     logo?.addEventListener('click', () => {
+        window.location.hash = ``;
         mainContainer?.classList.remove('hide');
         bagScreen.classList.add('hide');
     });
 }
-function renderBag() {
+export function renderBag() {
+    window.location.hash = `bag/`;
     // включаем выключаем основной контейнер
     mainContainer?.classList.add('hide');
     bagScreen.classList.remove('hide');
+    checkEmpty();
     //
 }
-let countTotal = 0;
 export function addCard() {
     const cart: NodeListOf<HTMLElement> = document.querySelectorAll('.cart');
     for (let i = 0; i < cart.length; i++) {
         cart[i].children[1].children[1].addEventListener('click', () => {
+            checkEmpty();
             const bagCartContainer = document.createElement('div');
             const bagCartInfo = document.createElement('div');
             const bagInfoImg = document.createElement('img');
@@ -68,7 +72,6 @@ export function addCard() {
             const urlImg = ImgContainer.style.backgroundImage;
             const description = cart[i].children[1].children[0].children[6].textContent as string;
             const discount = cart[i].children[1].children[0].children[2].children[0].textContent as string;
-            console.log(cart[i]);
             bagInfoImg.src = urlImg.slice(5, -2);
             cartName.innerText = name;
             cartName.href = '#';
@@ -82,7 +85,11 @@ export function addCard() {
             removeCards();
             remove.addEventListener('click', () => {
                 countTotal -= +discountTotal;
+                if (countTotal < 0) {
+                    countTotal = 0.0;
+                }
                 (total?.children[0] as HTMLElement).innerText = `${countTotal.toFixed(2)}$`;
+                checkEmpty();
             });
         });
     }
@@ -97,5 +104,21 @@ function removeCards() {
         removed[i].addEventListener('click', () => {
             bagCartContainer[i].remove();
         });
+    }
+}
+
+export function checkEmpty() {
+    if (countTotal === 0) {
+        bagScreen.innerHTML = `
+        <div class="empty__container">
+            <div class="bag__empty">Сart is empty.
+            Go to the online store to start shopping.
+            </div>
+            <button class="bag__btn btn">Back to store</button>
+        </div>
+    `;
+    } else if (countTotal > 0) {
+        const empty = document.querySelector('.empty__container') as HTMLElement;
+        empty.innerHTML = '';
     }
 }

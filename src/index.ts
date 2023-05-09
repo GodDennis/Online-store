@@ -1,8 +1,9 @@
 import './nullstyle.css';
 import './Index.css';
 import { dataCase } from './data';
-import { shopBag, addCard } from './shop-bag';
+import { shopBag, addCard, mainContainer } from './shop-bag';
 import { RenderCard } from './goodCard';
+import { Router } from './router';
 interface products {
     id: number;
     title: string;
@@ -32,7 +33,10 @@ type filter = {
     [index: string]: HTMLElement;
 };
 const goodsContainer: HTMLElement = document.querySelector('.goods__container') as HTMLElement;
-function cart(data: products[]): void {
+const flexContainer = document.createElement('div');
+flexContainer.classList.add('goods__flex');
+export function cart(data: products[]): void {
+    mainContainer?.classList.remove('hide');
     for (let i = 0; i < data.length; i++) {
         //Init cart elements
         const cart = document.createElement('div');
@@ -56,7 +60,6 @@ function cart(data: products[]): void {
         const descStockSpan = document.createElement('span');
         const descDiscountSpan = document.createElement('span');
         //classAdd
-
         cart.classList.add('cart');
         cartPrice.classList.add('cartPrice');
         descDiscription.classList.add('descriprion__text', 'hide');
@@ -109,7 +112,9 @@ function cart(data: products[]): void {
 
         // insert elements of cart
 
-        goodsContainer.append(cart);
+        // goodsContainer.append(cart);
+        goodsContainer.append(flexContainer);
+        flexContainer.append(cart);
         cart.prepend(cartName);
         cart.append(cartContainer);
         cartContainer.append(cartDescription);
@@ -130,12 +135,13 @@ function cart(data: products[]): void {
         descCategory.append(descCategorySpan);
         descRating.append(descRatingSpan);
         descStock.append(descStockSpan);
+        const id = dataCase.products[i].id;
+        cart.id = `${id}`;
     }
 }
-
 cart(dataCase.products);
 
-const items: Element = document.querySelector('.goods__container') as HTMLElement;
+const items: Element = document.querySelector('.goods__flex') as HTMLElement;
 
 function ASCPrice(a: number) {
     for (let i = 0; i < items.children.length; i++) {
@@ -298,7 +304,7 @@ function filterSelect(filterType: string) {
             });
             result = filteredCards;
             checkOtherFilters(result, elemType);
-            goodsContainer.innerHTML = '';
+            flexContainer.innerHTML = '';
         } else if (!a.checked) {
             setfirst.delete(a.id);
             filteredCards = filteredCards.filter((el) => {
@@ -311,7 +317,7 @@ function filterSelect(filterType: string) {
                     return false;
                 } else return true;
             });
-            goodsContainer.innerHTML = '';
+            flexContainer.innerHTML = '';
             setsecond.size == 0 ? allChecked(filterType, dataCase.products) : allChecked(filterType, secondresult);
         }
         result = duplicate(result);
@@ -325,22 +331,24 @@ function filterSelect(filterType: string) {
             localCard = duplicate(localCard);
             cart(localCard);
         } else cart(result);
+        resetFilters();
+        shopBag();
+        addCard();
+        Router();
+        RenderCard();
     };
-    resetFilters();
 }
 filtersType.forEach((type: string) => filterSelect(type));
-
+let anotherFiltered;
 function checkOtherFilters(filteredCards: products[], type: string) {
     domFilter[type].onchange = (el: Event) => {
-        let anotherFiltered;
         if (result.length) {
             anotherFiltered = result;
         } else anotherFiltered = dataCase.products;
-
-        console.log(result);
         a = el.target as HTMLInputElement;
         setsecond.add(a.id);
         if (a.checked) {
+            console.log(localCard);
             anotherFiltered.filter((card) => {
                 if (setsecond.has(card[type])) {
                     secondresult.push(card);
@@ -349,19 +357,33 @@ function checkOtherFilters(filteredCards: products[], type: string) {
                 }
                 secondresult = duplicate(secondresult);
             });
-            goodsContainer.innerHTML = '';
+            flexContainer.innerHTML = '';
         } else if (!a.checked) {
+            console.log(localCard);
             setsecond.delete(a.id);
             secondresult = secondresult.filter((el) => {
                 if (a.id == el[type]) {
                     return false;
                 } else return true;
             });
-            goodsContainer.innerHTML = '';
+            flexContainer.innerHTML = '';
             allChecked(type, result);
             if (setfirst.size == 0 && setsecond.size == 0) cart(dataCase.products);
         }
-        cart(secondresult);
+        if (setfirst.size) {
+            localCard = filteredCards.filter((el) => {
+                if (setsecond.has(el.brand) && setfirst.has(el.category)) {
+                    return true;
+                } else false;
+            });
+            localCard = duplicate(localCard);
+            cart(localCard);
+        } else cart(secondresult);
+        resetFilters();
+        shopBag();
+        addCard();
+        Router();
+        RenderCard();
     };
 }
 
@@ -375,7 +397,7 @@ function allChecked(type: string, data: products[]) {
         }
     });
     if (elemChecked == false) {
-        goodsContainer.innerHTML = '';
+        flexContainer.innerHTML = '';
         cart(data);
     }
 }
@@ -383,7 +405,7 @@ function allChecked(type: string, data: products[]) {
 function resetFilters() {
     const reset = document.querySelector('.filter__reset') as HTMLButtonElement;
     reset?.addEventListener('click', () => {
-        goodsContainer.innerHTML = '';
+        flexContainer.innerHTML = '';
         cart(dataCase.products);
         const checkbox = document.querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
         for (let i = 0; i < checkbox.length; i++) {
@@ -400,4 +422,5 @@ function resetFilters() {
 }
 shopBag();
 addCard();
+Router();
 RenderCard();
