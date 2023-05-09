@@ -1,24 +1,37 @@
 import { dataCase } from './data';
 import { mainContainer, logo, main } from './shop-bag';
-export function RenderCard() {
+
+export function RenderCardHash() {
     const goodCards = document.querySelectorAll('.cart');
     for (let i = 0; i < goodCards.length; i++) {
-        const property = goodCards[i].children[1].children[0];
-        const category = property.children[0].children[0].textContent;
-        const brand = property.children[1].children[0].textContent;
-        const discount = property.children[2].children[0].textContent;
-        const price = property.children[3].children[0].textContent;
-        const rating = property.children[4].children[0].textContent;
-        const stock = property.children[5].children[0].textContent;
-        const description = property.children[6].textContent;
-        const name = goodCards[i].children[0].textContent;
+        goodCards[i].children[1].children[2].addEventListener('click', () => {
+            window.location.hash = `card/${goodCards[i].id}`;
+        });
+    }
+}
+
+export function render() {
+    const goodCards = document.querySelectorAll('.cart');
+    for (let i = 0; i < goodCards.length; i++) {
         const card = document.createElement('div');
-        let id: number;
+        const name = goodCards[i].children[0].textContent;
         let img: string[] = [];
-        const render = function () {
+        if (+goodCards[i].id == +window.location.hash.slice(6)) {
+            const property = goodCards[i].children[1].children[0];
+            const category = property.children[0].children[0].textContent;
+            const brand = property.children[1].children[0].textContent;
+            const discount = property.children[2].children[0].textContent;
+            const price = property.children[3].children[0].textContent;
+            const rating = property.children[4].children[0].textContent;
+            const stock = property.children[5].children[0].textContent;
+            const description = property.children[6].textContent;
             mainContainer?.classList.add('hide');
-            window.location.hash = `#card/${id}`;
             main?.append(card);
+            for (let j = 0; j < dataCase.limit; j++) {
+                if (dataCase.products[j].title == name) {
+                    img = [...dataCase.products[j].images];
+                }
+            }
             card.classList.add('productCard');
             card.innerHTML = `
                     <div class='productcard__container'>
@@ -45,28 +58,16 @@ export function RenderCard() {
                             </div>
                         </div>
                     </div>`;
-
-            logo?.addEventListener('click', () => {
-                mainContainer?.classList.remove('hide');
-                window.location.hash === '';
-                card?.remove();
-            });
-            const bag = document.querySelector('.shop-bag');
-            bag?.addEventListener('click', () => {
-                card?.remove();
-            });
-        };
-        for (let j = 0; j < dataCase.limit; j++) {
-            if (dataCase.products[j].title == name) {
-                id = dataCase.products[j].id;
-                img = [...dataCase.products[j].images];
-                card.id = `${id}`;
-                if (window.location.hash === `#card/${id}`) {
-                    window.addEventListener('load', render);
-                    window.addEventListener('hashchange', render);
-                }
-            }
         }
-        goodCards[i].children[1].children[2].addEventListener('click', render);
+
+        logo?.addEventListener('click', () => {
+            mainContainer?.classList.remove('hide');
+            window.location.hash === '';
+            card?.remove();
+        });
+        const bag = document.querySelector('.shop-bag');
+        bag?.addEventListener('click', () => {
+            card?.remove();
+        });
     }
 }

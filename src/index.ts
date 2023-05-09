@@ -2,7 +2,7 @@ import './nullstyle.css';
 import './Index.css';
 import { dataCase } from './data';
 import { shopBag, addCard, mainContainer } from './shop-bag';
-import { RenderCard } from './goodCard';
+import { RenderCardHash } from './goodCard';
 import { Router } from './router';
 interface products {
     id: number;
@@ -135,8 +135,16 @@ export function cart(data: products[]): void {
         descCategory.append(descCategorySpan);
         descRating.append(descRatingSpan);
         descStock.append(descStockSpan);
-        const id = dataCase.products[i].id;
-        cart.id = `${id}`;
+        const setId = function () {
+            const cart = document.querySelectorAll('.cart');
+            for (let j = 0; j < dataCase.limit; j++) {
+                if (cart[i].children[0].textContent == dataCase.products[j].title) {
+                    const id = dataCase.products[j].id;
+                    cart[i].id = `${id}`;
+                }
+            }
+        };
+        setId();
     }
 }
 cart(dataCase.products);
@@ -335,7 +343,7 @@ function filterSelect(filterType: string) {
         shopBag();
         addCard();
         Router();
-        RenderCard();
+        RenderCardHash();
     };
 }
 filtersType.forEach((type: string) => filterSelect(type));
@@ -383,7 +391,7 @@ function checkOtherFilters(filteredCards: products[], type: string) {
         shopBag();
         addCard();
         Router();
-        RenderCard();
+        RenderCardHash();
     };
 }
 
@@ -418,9 +426,13 @@ function resetFilters() {
         setfirst.clear();
         setsecond.clear();
         elemType = undefined;
+        shopBag();
+        addCard();
+        Router();
+        RenderCardHash();
     });
 }
 shopBag();
 addCard();
 Router();
-RenderCard();
+RenderCardHash();
